@@ -8,6 +8,7 @@ import Story from "./pages/Story";
 import HappyHour from "./pages/HappyHour";
 import FormTest from "./pages/FormTest";
 import ExternalRedirect from "./pages/ExternalRedirect";
+import BlogsPage from "./pages/BlogsPage";
 
 const Fifa26 = lazy(() => import("./pages/Fifa26")); // out-of-scope page, lazy
 
@@ -27,6 +28,8 @@ export default function App() {
         />
         <Route path="form" element={<FormTest />} />
       </Route>
+
+        <Route path="blogs" element={<BlogsPage/>}></Route>
 
       {/* Out of scope: Fifa26 keeps its own standalone chrome (own Navbar/Footer),
           so it is routed OUTSIDE the dark Layout shell to avoid double chrome. */}

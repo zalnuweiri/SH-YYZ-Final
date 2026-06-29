@@ -230,18 +230,18 @@ export default function BlogSection() {
                                 </h3>
 
                                 <div className="flex flex-col items-start gap-[0.2vw]">
-                                    <p className={`${T.subtitle} text-[#bfb7af]`}>
+                                    <p className={`${T.subtitle} text-[#bfb7af] font-bold`}>
                                         {card.author}
                                     </p>
 
                                     {card.dateLabel && (
-                                        <p className={`${T.caption2} text-[#bfb7af]`}>
+                                        <p className={`${T.caption2} text-[#bfb7af] font-bold`}>
                                             {card.dateLabel}
                                         </p>
                                     )}
                                 </div>
 
-                                <span className={`inline-flex items-center justify-center rounded-[4px] border border-[#4a4a4a] ${T.caption2} uppercase text-[#9a9a9a] px-[0.9vw] h-[1.9vw]`}>
+                                <span className={`inline-flex items-center justify-center rounded-[4px] border border-[#4a4a4a] ${T.caption2} uppercase text-[#9a9a9a] px-[0.9vw] h-[1.9vw] font-bold`}>
                   {card.category}
                 </span>
                             </div>
