@@ -1,0 +1,320 @@
+// src/components/BlogSection.jsx
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+import Reveal from "../lib/motion/Reveal";
+import { T } from "../styles/figmaTokens";
+import { supabase } from "../lib/supabaseClient";
+
+const BLOG_IMAGE_BUCKET = "blog-images";
+
+const FALLBACK_POSTS = [
+    {
+        id: "fallback-1",
+        img: "/redesign/fig-blog-1.jpg",
+        title: "The best for you to try at home",
+        category: "Ingredients",
+        href: "https://www.instagram.com/silenth.to/",
+        author: "Silent H team",
+        dateLabel: "5 days ago",
+    },
+    {
+        id: "fallback-2",
+        img: "/redesign/fig-blog-2.jpg",
+        title: "It’s drinks o’clock in Mexico",
+        category: "Drinks",
+        href: "https://www.instagram.com/silenth.to/",
+        author: "Silent H team",
+        dateLabel: "5 days ago",
+    },
+    {
+        id: "fallback-3",
+        img: "/redesign/fig-blog-3.jpg",
+        title: "Culture and food in one dish",
+        category: "Culture",
+        href: "https://www.instagram.com/silenth.to/",
+        author: "Silent H team",
+        dateLabel: "5 days ago",
+    },
+    {
+        id: "fallback-4",
+        img: "/redesign/fig-blog-4.jpg",
+        title: "The best for you to try at home",
+        category: "Ingredients",
+        href: "https://www.instagram.com/silenth.to/",
+        author: "Silent H team",
+        dateLabel: "5 days ago",
+    },
+];
+
+function isExternalHref(href) {
+    return /^https?:\/\//i.test(href);
+}
+
+function isFullImageUrl(value) {
+    return /^https?:\/\//i.test(value);
+}
+
+function resolveImageUrl(value) {
+    if (!value) return "/placeholder.jpg";
+
+    const cleanValue = String(value).trim();
+
+    if (isFullImageUrl(cleanValue)) {
+        console.log("[BlogSection] full image URL:", cleanValue);
+        return cleanValue;
+    }
+
+    const cleanPath = cleanValue.replace(/^\/+/, "");
+
+    const { data } = supabase.storage
+        .from(BLOG_IMAGE_BUCKET)
+        .getPublicUrl(cleanPath);
+
+    console.log("[BlogSection] resolved image:", {
+        original: value,
+        cleanPath,
+        publicUrl: data?.publicUrl,
+    });
+
+    return data?.publicUrl || "/placeholder.jpg";
+}
+
+function formatRelativeDate(value) {
+    if (!value) return "";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) return "";
+
+    const now = new Date();
+    const diffMs = date.getTime() - now.getTime();
+    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+    const formatter = new Intl.RelativeTimeFormat("en", {
+        numeric: "auto",
+    });
+
+    if (Math.abs(diffDays) < 1) return "today";
+    if (Math.abs(diffDays) < 30) return formatter.format(diffDays, "day");
+
+    const diffMonths = Math.round(diffDays / 30);
+    if (Math.abs(diffMonths) < 12) return formatter.format(diffMonths, "month");
+
+    const diffYears = Math.round(diffMonths / 12);
+    return formatter.format(diffYears, "year");
+}
+
+function getPostHref(post) {
+    if (post.href) return post.href;
+    if (post.slug) return `/story/${post.slug}`;
+
+    return "/story";
+}
+
+function normalizePost(post) {
+    return {
+        id: post.id,
+        img: resolveImageUrl(post.image_url),
+        title: post.title || "Untitled story",
+        category: post.category || "Story",
+        href: getPostHref(post),
+        author: post.author_name || "Silent H team",
+        dateLabel:
+            post.date_label ||
+            formatRelativeDate(post.published_at || post.created_at),
+    };
+}
+
+function SmartLink({ href, className, children }) {
+    if (isExternalHref(href)) {
+        return (
+            <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={className}
+            >
+                {children}
+            </a>
+        );
+    }
+
+    return (
+        <Link to={href} className={className}>
+            {children}
+        </Link>
+    );
+}
+
+export default function BlogSection() {
+    const [posts, setPosts] = useState(FALLBACK_POSTS);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        let ignore = false;
+
+        async function loadBlogPosts() {
+            const { data, error } = await supabase
+                .from("blog_posts")
+                .select(
+                    "id,title,category,image_url,href,slug,author_name,date_label,published_at,created_at,sort_order,status"
+                )
+                .eq("status", "published")
+                .order("sort_order", { ascending: true })
+                .order("published_at", { ascending: false })
+                .limit(4);
+
+            if (ignore) return;
+
+            if (error) {
+                console.error("[BlogSection] Failed to load blog posts:", error);
+                setPosts(FALLBACK_POSTS);
+                setIsLoading(false);
+                return;
+            }
+
+            const nextPosts = (data ?? []).map(normalizePost);
+
+            setPosts(nextPosts.length ? nextPosts : FALLBACK_POSTS);
+            setIsLoading(false);
+        }
+
+        loadBlogPosts();
+
+        return () => {
+            ignore = true;
+        };
+    }, []);
+
+    return (
+        <section className="relative w-full">
+            {/* Desktop: Frame 1436 1140w @x70 → centered 89.06vw, gap32 = 2.5vw */}
+            <div className="hidden md:flex w-[89.06vw] mx-auto flex-col items-center gap-[2.5vw]">
+                <Reveal className="flex flex-col items-center gap-[2.5vw] w-full">
+                    <h2 className={`${T.h1} uppercase text-sh-cream text-center leading-[1] font-bold`}>
+                        A blog full of experiences
+                    </h2>
+
+                    <p className={`${T.body} text-sh-cream text-center leading-[1.2]`}>
+                        A closer look at the flavours, culture, and experiences behind Silent H.
+                    </p>
+                </Reveal>
+
+                <div
+                    className={`flex flex-row items-end justify-start gap-[1.56vw] w-full transition-opacity duration-300 ${
+                        isLoading ? "opacity-80" : "opacity-100"
+                    }`}
+                >
+                    {posts.map((card, i) => (
+                        <Reveal
+                            key={card.id ?? `${card.title}-${i}`}
+                            delay={i * 0.08}
+                            className="w-[21.09vw] flex flex-col gap-[1.56vw]"
+                        >
+                            <SmartLink
+                                href={card.href}
+                                className="group block overflow-hidden rounded-[4px] h-[14.06vw]"
+                            >
+                                <img
+                                    src={card.img}
+                                    alt={card.title}
+                                    loading="lazy"
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                            </SmartLink>
+
+                            <div className="flex flex-col items-start gap-[1vw]">
+                                <h3 className={`${T.h3} text-sh-cream leading-[1.2]`}>
+                                    {card.title}
+                                </h3>
+
+                                <div className="flex flex-col items-start gap-[0.2vw]">
+                                    <p className={`${T.subtitle} text-[#bfb7af]`}>
+                                        {card.author}
+                                    </p>
+
+                                    {card.dateLabel && (
+                                        <p className={`${T.caption2} text-[#bfb7af]`}>
+                                            {card.dateLabel}
+                                        </p>
+                                    )}
+                                </div>
+
+                                <span className={`inline-flex items-center justify-center rounded-[4px] border border-[#4a4a4a] ${T.caption2} uppercase text-[#9a9a9a] px-[0.9vw] h-[1.9vw]`}>
+                  {card.category}
+                </span>
+                            </div>
+                        </Reveal>
+                    ))}
+                </div>
+
+                <Link
+                    to="/story"
+                    className={`self-start ${T.button} uppercase text-sh-pink transition-opacity hover:opacity-80`}
+                >
+                    View all stories
+                </Link>
+            </div>
+
+            {/* Mobile */}
+            <div className="md:hidden w-full max-w-[321px] mx-auto py-12 flex flex-col items-center gap-6">
+                <h2 className="font-display font-bold uppercase text-sh-cream text-center leading-[1.05] text-[32px] tracking-[0.05em]">
+                    A blog full of experiences
+                </h2>
+
+                <p className="font-body text-sh-cream text-center text-[18px] leading-[1.3] tracking-[0.1em]">
+                    A closer look at the flavours, culture, and experiences behind Silent H.
+                </p>
+
+                <div
+                    className={`w-full grid grid-cols-1 sm:grid-cols-2 gap-8 transition-opacity duration-300 ${
+                        isLoading ? "opacity-80" : "opacity-100"
+                    }`}
+                >
+                    {posts.map((card, i) => (
+                        <SmartLink
+                            key={card.id ?? `${card.title}-${i}`}
+                            href={card.href}
+                            className="group flex flex-col gap-3 text-left"
+                        >
+                            <div className="overflow-hidden rounded-[4px] aspect-[3/2]">
+                                <img
+                                    src={card.img}
+                                    alt={card.title}
+                                    loading="lazy"
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                />
+                            </div>
+
+                            <h3 className="font-display text-sh-cream text-[18px] leading-[1.2] tracking-[0.05em]">
+                                {card.title}
+                            </h3>
+
+                            <p className="font-body text-[#bfb7af] text-[26px] tracking-[0.2em] leading-[1]">
+                                {card.author}
+                            </p>
+
+                            {card.dateLabel && (
+                                <p className="font-body text-[#bfb7af] text-[14px] tracking-[0.2em] -mt-1">
+                                    {card.dateLabel}
+                                </p>
+                            )}
+
+                            <span className="inline-flex w-fit items-center justify-center rounded-[4px] border border-[#4a4a4a] font-body uppercase text-[#9a9a9a] text-[14px] tracking-[0.2em] px-3 py-1">
+                {card.category}
+              </span>
+                        </SmartLink>
+                    ))}
+                </div>
+
+                <Link
+                    to="/story"
+                    className="self-start font-body uppercase text-sh-pink text-[16px] tracking-[0.1em]"
+                >
+                    View all stories
+                </Link>
+            </div>
+        </section>
+    );
+}

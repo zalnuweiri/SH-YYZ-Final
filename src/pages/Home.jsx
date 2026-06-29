@@ -6,6 +6,7 @@ import Parallax from "../lib/motion/Parallax";
 import { useOTWidget } from "../components/OTwidget.jsx";
 import { T, M, BTN_OUTLINE } from "../styles/figmaTokens";
 import MenuCarousel from "../components/MenuCarousel";
+import BlogSection from "../components/BlogSection";
 
 
 // Outlined Secondary button (cream border, label fades cream→pink on hover). Renders a
@@ -535,84 +536,7 @@ export default function Home() {
             22px cream centered; 4 cards 270w gap20 bottom-aligned: fig photo 270×180
             r4 + Mondwest Bold 22px title + small outlined "Read more" pill;
             "View all stories" NeueBit Regular 22px PINK left-aligned. */}
-          <section className="relative w-full">
-            {/* Desktop: Frame 1436 1140w @x70 → centered 89.06vw, gap32 = 2.5vw */}
-            <div className="hidden md:flex w-[89.06vw] mx-auto flex-col items-center gap-[2.5vw]">
-              <Reveal className="flex flex-col items-center gap-[2.5vw] w-full">
-                {/* Mondwest Bold 40px ls2.8 lh40 → 3.125vw / 0.219vw */}
-                <h2 className={`${T.h1} uppercase text-sh-cream text-center leading-[1]`}>
-                  A blog full of experiences
-                </h2>
-                {/* Desktop/Body (NeueBit 22, ls 10%) */}
-                <p className={`${T.body} text-sh-cream text-center leading-[1.2]`}>
-                  A closer look at the flavours, culture, and experiences behind Silent H.
-                </p>
-              </Reveal>
-
-              {/* Frame 1648: 4 cards row, gap20 = 1.56vw, bottom-aligned (C:MAX). */}
-              <div className="flex flex-row items-end justify-start gap-[1.56vw] w-full">
-                {BLOG_CARDS.map((card, i) => (
-                    <Reveal key={i} delay={i * 0.08} className="w-[21.09vw] flex flex-col gap-[1.56vw]">
-                      {/* photo 270×180 r4 → h 14.06vw */}
-                      <a href={card.href} target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-[4px] h-[14.06vw]">
-                        <img src={card.img} alt={card.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                      </a>
-                      {/* Frame 1499: title (Monoglyphic Reg 22) + byline + category tag */}
-                      <div className="flex flex-col items-start gap-[1vw]">
-                        <h3 className={`${T.h3} text-sh-cream leading-[1.2]`}>
-                          {card.title}
-                        </h3>
-                        <div className="flex flex-col items-start gap-[0.2vw]">
-                          {/* Desktop/Subtitle (NeueBit 22, ls 20%), grey */}
-                          <p className={`${T.subtitle} text-[#bfb7af]`}>Silent H team</p>
-                          {/* Caption 2 (NeueBit 14, ls 20%), grey */}
-                          <p className={`${T.caption2} text-[#bfb7af]`}>5 days ago</p>
-                        </div>
-                        {/* category tag pill — Caption 2 (NeueBit 14, ls 20%) UPPER, grey outline */}
-                        <span className={`inline-flex items-center justify-center rounded-[4px] border border-[#4a4a4a] ${T.caption2} uppercase text-[#9a9a9a] px-[0.9vw] h-[1.9vw]`}>
-                      {card.category}
-                    </span>
-                      </div>
-                    </Reveal>
-                ))}
-              </div>
-
-              {/* "View all stories" NeueBit Bold 22px PINK UPPER, align LEFT → 1.72vw */}
-              <Link
-                  to="/story"
-                  className={`self-start ${T.button} uppercase text-sh-pink transition-opacity hover:opacity-80`}
-              >
-                View all stories
-              </Link>
-            </div>
-
-            {/* Mobile: Figma mobile Frame 1436 — H1 32 UPPER + body 18; cards w/ title (Mobile/H3
-              18 Mono), author (Mobile/Subtitle 26), date + category (Caption 2 14). */}
-            <div className="md:hidden w-full max-w-[321px] mx-auto py-12 flex flex-col items-center gap-6">
-              <h2 className="font-display font-bold uppercase text-sh-cream text-center leading-[1.05] text-[32px] tracking-[0.05em]">
-                A blog full of experiences
-              </h2>
-              <p className="font-body text-sh-cream text-center text-[18px] leading-[1.3] tracking-[0.1em]">
-                A closer look at the flavours, culture, and experiences behind Silent H.
-              </p>
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-8">
-                {BLOG_CARDS.map((card, i) => (
-                    <a key={i} href={card.href} target="_blank" rel="noopener noreferrer" className="group flex flex-col gap-3 text-left">
-                      <div className="overflow-hidden rounded-[4px] aspect-[3/2]">
-                        <img src={card.img} alt={card.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                      </div>
-                      <h3 className="font-display text-sh-cream text-[18px] leading-[1.2] tracking-[0.05em]">{card.title}</h3>
-                      <p className="font-body text-[#bfb7af] text-[26px] tracking-[0.2em] leading-[1]">Silent H team</p>
-                      <p className="font-body text-[#bfb7af] text-[14px] tracking-[0.2em] -mt-1">5 days ago</p>
-                      <span className="inline-flex w-fit items-center justify-center rounded-[4px] border border-[#4a4a4a] font-body uppercase text-[#9a9a9a] text-[14px] tracking-[0.2em] px-3 py-1">{card.category}</span>
-                    </a>
-                ))}
-              </div>
-              <Link to="/story" className="self-start font-body uppercase text-sh-pink text-[16px] tracking-[0.1em]">
-                View all stories
-              </Link>
-            </div>
-          </section>
+          <BlogSection/>
 
           {/* Figma gap: Blog → Footer (≈162px @1280) so the footer lands at design Y4092 */}
           <div aria-hidden className="hidden md:block w-full h-[12.66vw]" />
@@ -624,9 +548,3 @@ export default function Home() {
 // Blog cards — Frame 1648. Photos extracted by their real fill hashes from the .fig (the layer
 // names "marijuana/woman/herbal" are stale — the actual images are cactus / cocktail / skulls /
 // cooking). Each card: title (Monoglyphic Reg), "Silent H team", "5 days ago", category tag.
-const BLOG_CARDS = [
-  { img: "/redesign/fig-blog-1.jpg", title: "The best for you to try at home", category: "Ingredients", href: "https://www.instagram.com/silenth.to/" },
-  { img: "/redesign/fig-blog-2.jpg", title: "It’s drinks o’clock in Mexico", category: "Drinks", href: "https://www.instagram.com/silenth.to/" },
-  { img: "/redesign/fig-blog-3.jpg", title: "Culture and food in one dish", category: "Culture", href: "https://www.instagram.com/silenth.to/" },
-  { img: "/redesign/fig-blog-4.jpg", title: "The best for you to try at home", category: "Ingredients", href: "https://www.instagram.com/silenth.to/" },
-];
