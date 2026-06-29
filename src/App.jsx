@@ -9,6 +9,7 @@ import HappyHour from "./pages/HappyHour";
 import FormTest from "./pages/FormTest";
 import ExternalRedirect from "./pages/ExternalRedirect";
 import BlogsPage from "./pages/BlogsPage";
+import BlogContent from "./pages/BlogContent";
 
 const Fifa26 = lazy(() => import("./pages/Fifa26")); // out-of-scope page, lazy
 
@@ -28,6 +29,7 @@ export default function App() {
         />
         <Route path="form" element={<FormTest />} />
           <Route path="blogs" element={<BlogsPage/>}></Route>
+          <Route path="blogs/:slug" element={<BlogContent />} />
       </Route>
 
 

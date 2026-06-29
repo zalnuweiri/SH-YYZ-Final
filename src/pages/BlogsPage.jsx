@@ -71,9 +71,9 @@ function resolveImageUrl(value) {
 
 function getPostHref(post) {
     if (post.href) return post.href;
-    if (post.slug) return `/story/${post.slug}`;
+    if (post.slug) return `/blogs/${post.slug}`;
 
-    return "/story";
+    return "/blogs";
 }
 
 function normalizePost(post) {
@@ -166,7 +166,7 @@ export default function BlogsPage() {
 
     return (
         <div className="pt-20 bg-[#ece1d4] min-h-screen w-full">
-            <Navbar />
+
 
             <header className="w-full flex flex-col items-center gap-8 pt-[100px] pb-16 px-6 text-center">
                 <h1
@@ -202,7 +202,6 @@ export default function BlogsPage() {
                 </div>
             </main>
 
-            <Footer />
         </div>
     );
 }

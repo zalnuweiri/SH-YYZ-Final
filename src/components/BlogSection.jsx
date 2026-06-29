@@ -11,6 +11,7 @@ const BLOG_IMAGE_BUCKET = "blog-images";
 const BLOG_CAROUSEL_THRESHOLD = 5;
 const DESKTOP_VISIBLE_POSTS = 4;
 const MOBILE_VISIBLE_POSTS = 2;
+const HOME_BLOG_CARD_HREF = "/blogs";
 
 const DESKTOP_TITLE_CLAMP_STYLE = {
     display: "-webkit-box",
@@ -168,7 +169,7 @@ function DesktopBlogCard({ card, index }) {
             className="min-w-0 flex flex-col gap-[1.56vw]"
         >
             <SmartLink
-                href={card.href}
+                href={HOME_BLOG_CARD_HREF}
                 className="group block overflow-hidden rounded-[4px] h-[14.06vw]"
             >
                 <img
@@ -215,7 +216,7 @@ function DesktopBlogCard({ card, index }) {
 function MobileBlogCard({ card }) {
     return (
         <SmartLink
-            href={card.href}
+            href={HOME_BLOG_CARD_HREF}
             className="group flex flex-col gap-3 text-left"
         >
             <div className="overflow-hidden rounded-[4px] aspect-[3/2]">
@@ -301,7 +302,18 @@ export default function BlogSection() {
 
             const nextPosts = (data ?? []).map(normalizePost);
 
-            setPosts(nextPosts.length ? nextPosts : FALLBACK_POSTS);
+            if (!nextPosts.length) {
+                console.warn(
+                    "[BlogSection] Supabase returned 0 published posts. Rendering FALLBACK_POSTS."
+                );
+                setPosts(FALLBACK_POSTS);
+            } else {
+                console.info(
+                    `[BlogSection] Loaded ${nextPosts.length} published posts from Supabase.`
+                );
+                setPosts(nextPosts);
+            }
+
             setIsLoading(false);
         }
 
