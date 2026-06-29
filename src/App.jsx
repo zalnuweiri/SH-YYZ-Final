@@ -27,9 +27,10 @@ export default function App() {
           element={<ExternalRedirect to="https://www.opentable.ca/r/silent-h-toronto" />}
         />
         <Route path="form" element={<FormTest />} />
+          <Route path="blogs" element={<BlogsPage/>}></Route>
       </Route>
 
-        <Route path="blogs" element={<BlogsPage/>}></Route>
+
 
       {/* Out of scope: Fifa26 keeps its own standalone chrome (own Navbar/Footer),
           so it is routed OUTSIDE the dark Layout shell to avoid double chrome. */}

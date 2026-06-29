@@ -1,56 +1,169 @@
+// src/pages/BlogsPage.jsx
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-// Make sure these paths match your actual project.
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { supabase } from "../lib/supabaseClient";
 
-const blogPosts = [
+const BLOG_IMAGE_BUCKET = "blog-images";
+
+const FALLBACK_POSTS = [
     {
+        id: "fallback-1",
         img: "/redesign/fig-blog-1.jpg",
         alt: "Date night at Silent H",
         title: "Date Night Restaurants in Toronto that Let You Worry About the Connection and Not the Experience",
+        href: "/blogs",
     },
     {
+        id: "fallback-2",
         img: "/redesign/fig-blog-2.jpg",
         alt: "Happy hour drinks and food",
         title: "Happy Hour in Downtown Toronto: Where to Go After Work",
+        href: "/blogs",
     },
     {
+        id: "fallback-3",
         img: "/redesign/fig-blog-3.jpg",
         alt: "Silent H restaurant interior",
         title: "Why Silent H Is the Best Mexican Restaurant in Toronto",
+        href: "/blogs",
     },
     {
+        id: "fallback-4",
         img: "/redesign/fig-blog-4.jpg",
         alt: "Private dining room at Silent H",
         title: "Private Dining in Toronto: Where to Host Your Next Event",
+        href: "/blogs",
     },
 ];
 
-function BlogCard({ img, alt, title }) {
-    return (
-        <div className="flex flex-col gap-8 cursor-pointer group">
-            <div className="relative overflow-hidden rounded-[4px] aspect-square">
-                <img
-                    src={img}
-                    alt={alt}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-            </div>
+function isFullUrl(value) {
+    return /^https?:\/\//i.test(value);
+}
 
-            <p
-                className="leading-[1.2] text-[#0b0b0b] text-[22px] tracking-[3.3px]"
-                style={{
-                    fontFamily: "'_Monoglyphic', sans-serif",
-                    fontStyle: "normal",
-                }}
-            >
-                {title}
-            </p>
-        </div>
+function isExternalHref(href) {
+    return /^https?:\/\//i.test(href);
+}
+
+function resolveImageUrl(value) {
+    if (!value) return "/placeholder.jpg";
+
+    const cleanValue = String(value).trim();
+
+    // Full correct Supabase/public URL.
+    if (isFullUrl(cleanValue) && !cleanValue.includes("YOUR_PROJECT_ID")) {
+        return cleanValue;
+    }
+
+    // Filename or storage path, e.g. "fig-blog-1.jpg" or "folder/fig-blog-1.jpg".
+    const cleanPath = cleanValue
+        .replace(/^\/+/, "")
+        .replace(/^.*\/blog-images\//, "");
+
+    const { data } = supabase.storage
+        .from(BLOG_IMAGE_BUCKET)
+        .getPublicUrl(cleanPath);
+
+    return data?.publicUrl || "/placeholder.jpg";
+}
+
+function getPostHref(post) {
+    if (post.href) return post.href;
+    if (post.slug) return `/story/${post.slug}`;
+
+    return "/story";
+}
+
+function normalizePost(post) {
+    return {
+        id: post.id,
+        img: resolveImageUrl(post.image_url),
+        alt: post.alt_text || post.title || "Silent H blog post",
+        title: post.title || "Untitled story",
+        href: getPostHref(post),
+    };
+}
+
+function CardWrapper({ href, children }) {
+    if (isExternalHref(href)) {
+        return (
+            <a href={href} target="_blank" rel="noopener noreferrer">
+                {children}
+            </a>
+        );
+    }
+
+    return <Link to={href}>{children}</Link>;
+}
+
+function BlogCard({ img, alt, title, href }) {
+    return (
+        <CardWrapper href={href}>
+            <div className="flex flex-col gap-8 cursor-pointer group">
+                <div className="relative overflow-hidden rounded-[4px] aspect-square">
+                    <img
+                        src={img}
+                        alt={alt}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                </div>
+
+                <p
+                    className="leading-[1.2] text-[#0b0b0b] text-[22px] tracking-[3.3px]"
+                    style={{
+                        fontFamily: "'_Monoglyphic', sans-serif",
+                        fontStyle: "normal",
+                    }}
+                >
+                    {title}
+                </p>
+            </div>
+        </CardWrapper>
     );
 }
 
 export default function BlogsPage() {
+    const [blogPosts, setBlogPosts] = useState(FALLBACK_POSTS);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        let ignore = false;
+
+        async function loadBlogPosts() {
+            const { data, error } = await supabase
+                .from("blog_posts")
+                .select(
+                    "id,title,image_url,href,slug,published_at,created_at,sort_order,status"
+                )
+                .eq("status", "published")
+                .order("sort_order", { ascending: true })
+                .order("published_at", { ascending: false });
+
+            if (ignore) return;
+
+            if (error) {
+                console.error("[BlogsPage] Failed to load blog posts:", error);
+                setBlogPosts(FALLBACK_POSTS);
+                setIsLoading(false);
+                return;
+            }
+
+            const nextPosts = (data ?? []).map(normalizePost);
+
+            setBlogPosts(nextPosts.length ? nextPosts : FALLBACK_POSTS);
+            setIsLoading(false);
+        }
+
+        loadBlogPosts();
+
+        return () => {
+            ignore = true;
+        };
+    }, []);
+
     return (
         <div className="pt-20 bg-[#ece1d4] min-h-screen w-full">
             <Navbar />
@@ -78,9 +191,13 @@ export default function BlogsPage() {
             </header>
 
             <main className="max-w-[1140px] mx-auto px-6 pb-24">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-16">
+                <div
+                    className={`grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-16 transition-opacity duration-300 ${
+                        isLoading ? "opacity-80" : "opacity-100"
+                    }`}
+                >
                     {blogPosts.map((post) => (
-                        <BlogCard key={post.title} {...post} />
+                        <BlogCard key={post.id ?? post.title} {...post} />
                     ))}
                 </div>
             </main>

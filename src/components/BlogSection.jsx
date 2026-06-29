@@ -250,7 +250,7 @@ export default function BlogSection() {
                 </div>
 
                 <Link
-                    to="/story"
+                    to="/blogs"
                     className={`self-start ${T.button} uppercase text-sh-pink transition-opacity hover:opacity-80`}
                 >
                     View all stories
