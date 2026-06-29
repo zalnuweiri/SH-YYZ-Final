@@ -5,6 +5,8 @@ import Reveal from "../lib/motion/Reveal";
 import Parallax from "../lib/motion/Parallax";
 import { useOTWidget } from "../components/OTwidget.jsx";
 import { T, M, BTN_OUTLINE } from "../styles/figmaTokens";
+import MenuCarousel from "../components/MenuCarousel";
+
 
 // Outlined Secondary button (cream border, label fades cream→pink on hover). Renders a
 // <Link> when `to` is set, else a <button> (for actions like the booking widget). Pass
@@ -175,93 +177,31 @@ export default function Home() {
             {/* Desktop exact composition (vw). Section width 946 @x167 → centered 73.91vw. */}
             <div className="hidden md:flex w-[73.91vw] mx-auto flex-col items-center gap-[2.5vw]">
               <Reveal className="flex flex-col items-center gap-[2.1vw] w-full">
-                {/* Mondwest Bold 28px ls1.96 lh33.6 → 2.1875vw / 0.153vw */}
-                <h2 className={`${T.h1} uppercase text-sh-cream text-center leading-[1.2] font-bold`}>
-                  Menú excepcional
-                </h2>
                 {/* Desktop/Body (NeueBit 22, ls 10%) */}
-                <p className={`${T.body} text-sh-cream text-center leading-[1.2]`}>
-                  From expertly crafted artisanal cocktails to dishes that celebrate authentic Mexican soul.
-                </p>
               </Reveal>
 
               {/* Frame 1435: grid + dots, gap28 = 2.19vw */}
               <div className="flex flex-col items-start gap-[2.19vw] w-full">
                 {/* Frame 1434: row of 3 cards, gap21 = 1.64vw, items centered */}
                 <div className="flex flex-row items-start justify-center gap-[1.64vw] w-full">
-                  {MENU_CARDS.map((c, i) => (
-                      <Reveal key={i} delay={i * 0.08} className="flex flex-col gap-[1.56vw]" style={{ width: c.w }}>
-                        <div className="overflow-hidden rounded-[4px]" style={{ height: c.h }}>
-                          <img
-                              src={c.src}
-                              alt="Silent H signature dish"
-                              loading="lazy"
-                              className={`w-full h-full object-cover ${c.pos} transition-transform duration-500 hover:scale-105`}
-                          />
-                        </div>
-                        {/* NeueBit Bold 16px ls3.2 UPPER → 1.25vw / 0.25vw */}
-                        <p className={`${T.caption} uppercase text-sh-cream`}>
-                          Product name
-                        </p>
-                      </Reveal>
-                  ))}
+                  <MenuCarousel/>
                 </div>
                 {/* Frame 1417: 8 dots @8×8 (0.625vw), gap8 (0.625vw); 4th = pink, rest grey */}
-                <div className="flex flex-row items-center gap-[0.625vw]">
-                  {Array.from({ length: 8 }).map((_, i) => (
-                      <span
-                          key={i}
-                          className={`block w-[0.625vw] h-[0.625vw] rounded-full ${i === 3 ? "bg-sh-pink" : "bg-[#9a9a9a]"}`}
-                      />
-                  ))}
-                </div>
+
               </div>
 
-              {/* SecondaryButton "Explore the Menu" 184×48 → 14.375vw × 3.75vw, centered */}
-              <OutlineButton to="/menu" size="w-[14.375vw] h-[3.75vw] font-bold">
-                Explore the Menu
-              </OutlineButton>
             </div>
 
             {/* Mobile — Figma Frame 1414, LEFT-aligned (all children at x0, like the rest of the
               page). Heading Mobile/H2 (Monoglyphic BOLD 24 UPPER ls5); paragraph hero-style
               (NeueBit 18 ls12.5); 2-up 151px card carousel with "PRODUCT NAME" (16px, 2 lines);
               8 dots LEFT (4th pink); 127px "View Menu" button LEFT. Gaps from .fig: 32/32/20/32. */}
-            <div className="md:hidden w-full max-w-[321px] mx-auto py-12 flex flex-col items-start text-left">
-              <h2 className="font-display font-bold uppercase text-sh-cream leading-[1.2] text-[24px] tracking-[0.05em]">
-                Menú excepcional
-              </h2>
-              {/* .fig has an explicit newline after "authentic" — line 1 wraps naturally ("…to"),
-                then the forced break sends "Mexican soul." to line 3 (no uniform tracking can do
-                this, since line 1 has less slack than line 2). */}
-              <p className="mt-8 font-body text-sh-cream leading-[1.2] text-[18px] tracking-[0.125em]">
-                From expertly crafted artisanal cocktails to dishes that celebrate authentic<br />Mexican soul.
-              </p>
+            <div className="md:hidden w-full max-w-[321px] mx-auto py-2 flex flex-col items-start text-left">
               {/* 2-up 151px square cards, swipeable (scroll-snap) */}
               <div className="mt-8 w-full flex gap-5 overflow-x-auto snap-x snap-mandatory pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                {MENU_CARDS.map((c, i) => (
-                    <div key={i} className="snap-start shrink-0 w-[calc(50%-0.625rem)] flex flex-col gap-2">
-                      <div className="overflow-hidden rounded-[4px] aspect-square">
-                        <img src={c.src} alt="Silent H signature dish" loading="lazy" className={`w-full h-full object-cover ${c.pos}`} />
-                      </div>
-                      {/* "Product name" — NeueBit 16px ls20%, 2 lines, left (was 13px) */}
-                      <p className="font-body uppercase text-sh-cream text-[16px] leading-[1.2] tracking-[0.2em] text-left">Product<br />name</p>
-                    </div>
-                ))}
+                <MenuCarousel/>
               </div>
               {/* Frame 1417: 8 dots LEFT-aligned (8px, 16px pitch), 4th pink */}
-              <div className="mt-5 flex flex-row items-center gap-2">
-                {Array.from({ length: 8 }).map((_, i) => (
-                    <span key={i} className={`block w-2 h-2 rounded-full ${i === 3 ? "bg-sh-pink" : "bg-[#9a9a9a]"}`} />
-                ))}
-              </div>
-              {/* SecondaryButton "View Menu" 127×48, LEFT-aligned under the dots */}
-              <Link
-                  to="/menu"
-                  className="mt-8 inline-flex items-center justify-center rounded-[4px] border border-sh-cream font-body uppercase text-sh-cream w-[127px] h-[48px] text-[16px] tracking-[0.1em] hover:bg-sh-cream hover:text-sh-black transition-colors"
-              >
-                View Menu
-              </Link>
             </div>
           </section>
 
