@@ -474,32 +474,79 @@ export default function Home() {
                 </div>
 
                 {/* Arch tombstone (same DM_ARCH construction as desktop), centered, on top.
-                  NO drop-shadow filter here: a CSS filter on an overflow-visible SVG clips the
-                  teeth that extend OUTSIDE the box on iOS Safari → only one corner survived. The
-                  dash is also coarsened ("4 3.5" vs desktop "1.8 3") because at 210px the desktop
-                  pattern shrinks to ~1px teeth that devices drop; coarser teeth render reliably. */}
+  NO drop-shadow filter here: a CSS filter on an overflow-visible SVG clips the
+  teeth that extend OUTSIDE the box on iOS Safari → only one corner survived. The
+  dash is also coarsened ("4 3.5" vs desktop "1.8 3") because at 210px the desktop
+  pattern shrinks to ~1px teeth that devices drop; coarser teeth render reliably. */}
                 <div className="absolute left-1/2 top-0 z-10 w-[210px] -translate-x-1/2">
-                  <svg viewBox="0 0 365 639" className="w-full h-auto" style={{ overflow: "visible" }}>
+                  <svg
+                      viewBox="0 0 365 639"
+                      className="w-full h-auto"
+                      style={{ overflow: "visible" }}
+                  >
                     <defs>
-                      <clipPath id="dmArchM"><path d={DM_ARCH} /></clipPath>
+                      <clipPath id="dmArchM">
+                        <path d={DM_ARCH} />
+                      </clipPath>
+
                       <path id="dmTextArcM" d="M -14 32 A 315 315 0 0 1 379 32" />
                     </defs>
+
                     <path d={DM_ARCH} fill="#ece1d4" />
-                    <path d={DM_ARCH} fill="none" stroke="#dfa867" strokeWidth="34" strokeDasharray="4 3.5" strokeLinejoin="miter" />
-                    <foreignObject x="0" y="0" width="365" height="639" clipPath="url(#dmArchM)">
-                      <div className="relative w-full h-full">
-                        <video src="/redesign/monterrey-map.mp4" poster="/redesign/monterrey-map-poster.jpg" autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" style={{ filter: "saturate(1.2) brightness(0.98) contrast(1.03)" }} />
-                        <div className="absolute inset-0 bg-[#d6b274] mix-blend-multiply opacity-60" />
-                      </div>
-                    </foreignObject>
-                    <path d={DM_ARCH} fill="none" stroke="#0a0608" strokeWidth="3" strokeLinejoin="miter" />
+
+                    <path
+                        d={DM_ARCH}
+                        fill="none"
+                        stroke="#dfa867"
+                        strokeWidth="34"
+                        strokeDasharray="4 3.5"
+                        strokeLinejoin="miter"
+                    />
+
+                    {/* iOS-safe: native SVG image instead of foreignObject/video */}
+                    <image
+                        href="/redesign/monterrey-map-poster.jpg"
+                        xlinkHref="/redesign/monterrey-map-poster.jpg"
+                        x="0"
+                        y="0"
+                        width="365"
+                        height="639"
+                        preserveAspectRatio="xMidYMid slice"
+                        clipPath="url(#dmArchM)"
+                    />
+
+                    {/* Warm parchment tint, clipped to the same arch */}
+                    <path
+                        d={DM_ARCH}
+                        fill="#d6b274"
+                        opacity="0.32"
+                        clipPath="url(#dmArchM)"
+                    />
+
+                    <path
+                        d={DM_ARCH}
+                        fill="none"
+                        stroke="#0a0608"
+                        strokeWidth="3"
+                        strokeLinejoin="miter"
+                    />
+
                     {/* bottom-corner squares = the miter outer block (strokeWidth/2 = 17u) at the
-                      OUTER corner. The dash only lands one at the bottom-right; pin BOTH at the same
-                      size/spot so they're symmetric (the BR one just overlaps its existing miter). */}
+      OUTER corner. The dash only lands one at the bottom-right; pin BOTH at the same
+      size/spot so they're symmetric (the BR one just overlaps its existing miter). */}
                     <rect x="-17" y="639" width="17" height="17" fill="#dfa867" />
                     <rect x="365" y="639" width="17" height="17" fill="#dfa867" />
-                    <text fill="#dfa867" className="font-display" fontSize="37" fontWeight="700" letterSpacing="3.4">
-                      <textPath href="#dmTextArcM" startOffset="50%" textAnchor="middle">DE MONTERREY</textPath>
+
+                    <text
+                        fill="#dfa867"
+                        className="font-display"
+                        fontSize="37"
+                        fontWeight="700"
+                        letterSpacing="3.4"
+                    >
+                      <textPath href="#dmTextArcM" startOffset="50%" textAnchor="middle">
+                        DE MONTERREY
+                      </textPath>
                     </text>
                   </svg>
                 </div>
