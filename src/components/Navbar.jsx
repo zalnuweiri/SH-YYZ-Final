@@ -13,7 +13,7 @@ import { T, EASE } from "../styles/figmaTokens";
 // 1px @1280 design = 0.078125vw → exact desktop pill scales with the full-bleed canvas.
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-    const { setShowWidget } = useOTWidget();
+    const { openReservationWidget } = useOTWidget();
     const location = useLocation();
 
     const handleLogoClick = (e) => {
@@ -77,7 +77,7 @@ export default function Navbar() {
                 <Logo className="h-[3.75vw] w-auto" />
                 {/* RESERVE (75w) — opens OT widget */}
                 <button
-                    onClick={() => setShowWidget(true)}
+                    onClick={openReservationWidget}
                     className={`${linkBase} text-sh-cream hover:text-sh-gold cursor-pointer`}
                 >
                     Reserve
@@ -145,7 +145,7 @@ export default function Navbar() {
                                     </NavLink>
                                 ) : (
                                     <button
-                                        onClick={() => { setIsOpen(false); setShowWidget(true); }}
+                                        onClick={openReservationWidget}
                                         className="h-8 flex items-center justify-center font-body uppercase text-[16px] tracking-[0.1em] text-sh-cream hover:text-sh-pink transition-colors"
                                     >
                                         {l.label}

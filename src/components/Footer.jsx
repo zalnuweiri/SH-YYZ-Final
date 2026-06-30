@@ -64,7 +64,7 @@ function RecommendedBadge({ imgClassName, fallbackClassName }) {
 //     ("RECOMENDED ON" green #00eb5b NeueBit Bold 18px + Tripadvisor logo 150×23).
 export default function Footer() {
     const [showForm, setShowForm] = useState(false);
-    const { setShowWidget } = useOTWidget();
+    const { openReservationWidget } = useOTWidget();
 
     const QUICK_LINKS = [
         { to: "/menu", label: "menu" },
@@ -121,7 +121,7 @@ export default function Footer() {
                                     {l.label}
                                 </Link>
                             ))}
-                            <button onClick={() => setShowWidget(true)} className={`${T.caption} uppercase text-sh-cream leading-[0.5] hover:text-sh-pink transition-colors text-left font-bold`}>
+                            <button onClick={openReservationWidget} className={`${T.caption} uppercase text-sh-cream leading-[0.5] hover:text-sh-pink transition-colors text-left font-bold`}>
                                 reserve a table
                             </button>
                         </div>
@@ -219,7 +219,7 @@ export default function Footer() {
                     {QUICK_LINKS.map((l) => (
                         <Link key={l.to} to={l.to} className="font-body uppercase text-sh-cream text-[16px] leading-[0.5] tracking-[0.2em] hover:text-sh-pink transition-colors">{l.label}</Link>
                     ))}
-                    <button onClick={() => setShowWidget(true)} className="font-body uppercase text-sh-cream text-[16px] leading-[0.5] tracking-[0.2em] hover:text-sh-pink transition-colors">reserve a table</button>
+                    <button onClick={openReservationWidget} className="font-body uppercase text-sh-cream text-[16px] leading-[0.5] tracking-[0.2em] hover:text-sh-pink transition-colors">reserve a table</button>
                 </div>
 
                 {/* Address (40 below) */}

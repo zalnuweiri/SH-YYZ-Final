@@ -44,7 +44,7 @@ function MenuIntro() {
 }
 
 export default function Menu() {
-  const { setShowWidget } = useOTWidget();
+  const { openReservationWidget } = useOTWidget();
 
   const [activeMenu, setActiveMenu] = useState("food"); // "food" | "drinks"
   const [showAll, setShowAll] = useState(false);
@@ -386,7 +386,7 @@ export default function Menu() {
 
 
         <button
-            onClick={() => setShowWidget(true)}
+            onClick={openReservationWidget}
             className="fixed bottom-6 right-6 z-[9999] bg-[#EB4660] hover:bg-black font-display text-white px-6 py-3 rounded-full shadow-xl tracking-[0.2em] uppercase text-sm transition-all"
         >
           Reserve

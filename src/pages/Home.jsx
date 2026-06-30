@@ -59,7 +59,7 @@ const MENU_CARDS = [
 ];
 
 export default function Home() {
-  const { setShowWidget } = useOTWidget();
+  const { openReservationWidget } = useOTWidget();
 
   const restaurantSchema = {
     "@context": "https://schema.org",
@@ -243,7 +243,7 @@ export default function Home() {
                       and made to keep you coming back.
                     </p>
                     {/* SecondaryButton 216×48 r4 → 16.875vw × 3.75vw */}
-                    <OutlineButton onClick={() => setShowWidget(true)} size="w-[16.875vw] h-[3.75vw] font-bold">
+                    <OutlineButton onClick={openReservationWidget} size="w-[16.875vw] h-[3.75vw] font-bold">
                       Book Your Experience
                     </OutlineButton>
                   </div>
@@ -272,7 +272,7 @@ export default function Home() {
                   Chef Gerardo brings Mexico&apos;s street flavours to Toronto. Elevated, authentic,
                   and made to keep you coming back.
                 </p>
-                <button onClick={() => setShowWidget(true)} className="mt-8 inline-flex items-center justify-center rounded-[4px] border border-sh-cream font-body uppercase text-sh-cream text-[16px] tracking-[0.1em] w-[216px] h-[48px] hover:bg-sh-cream hover:text-sh-black transition-colors font-bold">
+                <button onClick={openReservationWidget} className="mt-8 inline-flex items-center justify-center rounded-[4px] border border-sh-cream font-body uppercase text-sh-cream text-[16px] tracking-[0.1em] w-[216px] h-[48px] hover:bg-sh-cream hover:text-sh-black transition-colors font-bold">
                   Book Your Experience
                 </button>
               </Reveal>

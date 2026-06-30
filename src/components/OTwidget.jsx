@@ -1,11 +1,25 @@
 // src/components/OTWidget.jsx
 import { createContext, useContext, useEffect, useState } from "react";
+import { trackReservationStarted } from "../lib/openaiPixel";
 
 // Context so we can trigger modal from anywhere
 const OTContext = createContext();
 
 export function OTProvider({ children }) {
     const [showWidget, setShowWidget] = useState(false);
+
+    const openReservationWidget = () => {
+        try {
+            trackReservationStarted();
+        } catch (error) {
+            console.warn("[OpenAI Pixel] Reservation tracking failed:", error);
+        }
+
+        setShowWidget(true);
+    };
+
+    // rest unchanged...
+
 
     useEffect(() => {
         if (showWidget) {
@@ -24,7 +38,7 @@ export function OTProvider({ children }) {
     }, [showWidget]);
 
     return (
-        <OTContext.Provider value={{ setShowWidget }}>
+        <OTContext.Provider value={{ setShowWidget, openReservationWidget }}>
             {children}
 
             {showWidget && (

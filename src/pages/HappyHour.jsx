@@ -33,7 +33,7 @@ const M = {
 };
 
 export default function HappyHour() {
-  const { setShowWidget } = useOTWidget();
+  const { openReservationWidget } = useOTWidget();
 
   return (
     <>
@@ -81,7 +81,7 @@ export default function HappyHour() {
           </div>
 
           <div className="mt-[calc(var(--dw)*3.75/100)] flex justify-center">
-            <Button variant="gold" onClick={() => setShowWidget(true)}>Reserve a table</Button>
+            <Button variant="gold" onClick={openReservationWidget}>Reserve a table</Button>
           </div>
 
           {/* Hero 2 — 940×228 */}
@@ -113,7 +113,7 @@ export default function HappyHour() {
           </div>
 
           <div className="mt-[calc(var(--dw)*3.75/100)] flex justify-center">
-            <Button variant="gold" onClick={() => setShowWidget(true)}>Book your experience</Button>
+            <Button variant="gold" onClick={openReservationWidget}>Book your experience</Button>
           </div>
         </div>
 
@@ -151,7 +151,7 @@ export default function HappyHour() {
           </div>
 
           <div className="mt-10 flex justify-center">
-            <Button variant="gold" onClick={() => setShowWidget(true)}>Reserve a table</Button>
+            <Button variant="gold" onClick={openReservationWidget}>Reserve a table</Button>
           </div>
 
           {/* TUESDAYS title sits ABOVE hero 2 */}
@@ -181,7 +181,7 @@ export default function HappyHour() {
           </div>
 
           <div className="mt-10 flex justify-center">
-            <Button variant="gold" onClick={() => setShowWidget(true)}>Book your experience</Button>
+            <Button variant="gold" onClick={openReservationWidget}>Book your experience</Button>
           </div>
         </div>
       </main>

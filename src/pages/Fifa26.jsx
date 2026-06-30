@@ -8,7 +8,7 @@ import { breadcrumb } from "../lib/seoSchema.js";
 
 
 export default function Fifa26() {
-    const { setShowWidget } = useOTWidget();
+    const { openReservationWidget } = useOTWidget();
     return (
         <>
             <SEO
@@ -58,7 +58,7 @@ export default function Fifa26() {
                         Looking for the best place to watch FIFA World Cup 2026 in Toronto? Silent H on King West offers upscale Mexican cuisine, handcrafted cocktails, and full match coverage all summer long.{' '}
                         <button
                             type="button"
-                            onClick={() => setShowWidget(true)}
+                            onClick={openReservationWidget}
                             className="text-[#7a88c0] underline cursor-pointer hover:text-[#eb4660] transition-colors"
                         >
                             Reserve your table now.
@@ -393,7 +393,7 @@ export default function Fifa26() {
                     </div>
                     <div className="flex justify-center">
                         <button
-                            onClick={() => setShowWidget(true)}
+                            onClick={openReservationWidget}
                             className="btn font-['NeueBit'] font-bold mt-5 px-12 ml-20.5 md:ml-0 py-3 text-black
                text-[clamp(0.9rem,1.8vw,1.25rem)] bg-[#dfa867] transition-all duration-500 ease-in-out
                tracking-[0.2em] hover:bg-[#ECE1D4] hover:text-black transition active:bg-black active:text-[#EB4660] active:border-transparent"
@@ -591,7 +591,7 @@ export default function Fifa26() {
                     </div>
                     <div className="flex justify-center">
                         <button
-                            onClick={() => setShowWidget(true)}
+                            onClick={openReservationWidget}
                             className="btn font-['NeueBit'] font-bold mt-5 px-12 ml-20.5 md:ml-0 py-3 text-black
                text-[clamp(0.9rem,1.8vw,1.25rem)] bg-[#dfa867] transition-all duration-500 ease-in-out
                tracking-[0.2em] hover:bg-[#ECE1D4] hover:text-black transition active:bg-black active:text-[#EB4660] active:border-transparent"
