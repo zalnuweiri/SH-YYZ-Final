@@ -11,7 +11,6 @@ const BLOG_IMAGE_BUCKET = "blog-images";
 const BLOG_CAROUSEL_THRESHOLD = 5;
 const DESKTOP_VISIBLE_POSTS = 4;
 const MOBILE_VISIBLE_POSTS = 2;
-const HOME_BLOG_CARD_HREF = "/blogs";
 
 const DESKTOP_TITLE_CLAMP_STYLE = {
     display: "-webkit-box",
@@ -120,7 +119,6 @@ function formatRelativeDate(value) {
 }
 
 function getPostHref(post) {
-    if (post.href) return post.href;
     if (post.slug) return `/blogs/${post.slug}`;
 
     return "/blogs";
@@ -169,7 +167,7 @@ function DesktopBlogCard({ card, index }) {
             className="min-w-0 flex flex-col gap-[1.56vw]"
         >
             <SmartLink
-                href={HOME_BLOG_CARD_HREF}
+                href={card.href}
                 className="group block overflow-hidden rounded-[4px] h-[14.06vw]"
             >
                 <img
@@ -216,7 +214,7 @@ function DesktopBlogCard({ card, index }) {
 function MobileBlogCard({ card }) {
     return (
         <SmartLink
-            href={HOME_BLOG_CARD_HREF}
+            href={card.href}
             className="group flex flex-col gap-3 text-left"
         >
             <div className="overflow-hidden rounded-[4px] aspect-[3/2]">
