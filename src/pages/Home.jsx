@@ -42,6 +42,16 @@ function OutlineButton({ to, onClick, size = "", children }) {
 // normal mid-path joins, so both gold squares render. (Same shape, just reordered + clockwise.)
 const DM_ARCH = "M 181.6 0 C 279.17 0 344.52 50.62 365 75.93 L 365 639 L 0 639 L 0 75.93 C 19.88 50.62 84.02 0 181.6 0 Z";
 
+const MOBILE_ARCH_WIDTH = 210;
+const MOBILE_ARCH_VIEWBOX_WIDTH = 365;
+const MOBILE_ARCH_VIEWBOX_HEIGHT = 639;
+const MOBILE_ARCH_SCALE = MOBILE_ARCH_WIDTH / MOBILE_ARCH_VIEWBOX_WIDTH;
+const MOBILE_ARCH_HEIGHT = MOBILE_ARCH_VIEWBOX_HEIGHT * MOBILE_ARCH_SCALE;
+
+const DM_ARCH_MASK = `url("data:image/svg+xml,${encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 365 639"><path fill="black" d="${DM_ARCH}"/></svg>`
+)}")`;
+
 const MENU_CARDS = [
   { src: "/redesign/fig-dsc-4248-1.jpg", w: "21.02vw", h: "28.91vw", pos: "object-[50%_50%]" },
   { src: "/redesign/fig-01-06-23-carbelle-djossa-tt-54-w.jpg", w: "28.59vw", h: "28.98vw", pos: "object-[50%_40%]" },
@@ -478,20 +488,24 @@ export default function Home() {
   teeth that extend OUTSIDE the box on iOS Safari → only one corner survived. The
   dash is also coarsened ("4 3.5" vs desktop "1.8 3") because at 210px the desktop
   pattern shrinks to ~1px teeth that devices drop; coarser teeth render reliably. */}
-                <div className="absolute left-1/2 top-0 z-10 w-[210px] -translate-x-1/2">
+                {/* Arch tombstone — iOS-safe animated version.
+  The animated map stays as a real HTML <video>, but it is masked with a WebKit/CSS
+  SVG mask instead of being placed inside SVG <foreignObject>. This preserves the
+  flying-birds animation while avoiding the iOS Safari foreignObject clipping bug. */}
+                <div
+                    className="absolute left-1/2 top-0 z-10 -translate-x-1/2"
+                    style={{
+                      width: `${MOBILE_ARCH_WIDTH}px`,
+                      height: `${MOBILE_ARCH_HEIGHT}px`,
+                    }}
+                >
+                  {/* Base SVG: parchment fill + gold teeth behind the clipped video.
+    The video covers the inner half of the gold stroke, leaving the outside teeth visible. */}
                   <svg
                       viewBox="0 0 365 639"
-                      className="w-full h-auto"
+                      className="absolute inset-0 z-0 w-full h-full"
                       style={{ overflow: "visible" }}
                   >
-                    <defs>
-                      <clipPath id="dmArchM">
-                        <path d={DM_ARCH} />
-                      </clipPath>
-
-                      <path id="dmTextArcM" d="M -14 32 A 315 315 0 0 1 379 32" />
-                    </defs>
-
                     <path d={DM_ARCH} fill="#ece1d4" />
 
                     <path
@@ -502,26 +516,57 @@ export default function Home() {
                         strokeDasharray="4 3.5"
                         strokeLinejoin="miter"
                     />
+                  </svg>
 
-                    {/* iOS-safe: native SVG image instead of foreignObject/video */}
-                    <image
-                        href="/redesign/monterrey-map-poster.jpg"
-                        xlinkHref="/redesign/monterrey-map-poster.jpg"
-                        x="0"
-                        y="0"
-                        width="365"
-                        height="639"
-                        preserveAspectRatio="xMidYMid slice"
-                        clipPath="url(#dmArchM)"
+                  {/* Animated map layer: normal HTML video, masked to the arch.
+    This is the key iOS fix: no foreignObject. */}
+                  <div
+                      className="absolute left-0 top-0 z-10 overflow-hidden"
+                      style={{
+                        width: `${MOBILE_ARCH_VIEWBOX_WIDTH}px`,
+                        height: `${MOBILE_ARCH_VIEWBOX_HEIGHT}px`,
+                        transform: `scale(${MOBILE_ARCH_SCALE})`,
+                        transformOrigin: "top left",
+
+                        WebkitMaskImage: DM_ARCH_MASK,
+                        maskImage: DM_ARCH_MASK,
+                        WebkitMaskSize: `${MOBILE_ARCH_VIEWBOX_WIDTH}px ${MOBILE_ARCH_VIEWBOX_HEIGHT}px`,
+                        maskSize: `${MOBILE_ARCH_VIEWBOX_WIDTH}px ${MOBILE_ARCH_VIEWBOX_HEIGHT}px`,
+                        WebkitMaskRepeat: "no-repeat",
+                        maskRepeat: "no-repeat",
+                        WebkitMaskPosition: "0 0",
+                        maskPosition: "0 0",
+
+                        WebkitBackfaceVisibility: "hidden",
+                        backfaceVisibility: "hidden",
+                      }}
+                  >
+                    <video
+                        src="/redesign/monterrey-map.mp4"
+                        poster="/redesign/monterrey-map-poster.jpg"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="auto"
+                        className="absolute inset-0 w-full h-full object-cover"
+                        style={{
+                          filter: "saturate(1.2) brightness(0.98) contrast(1.03)",
+                        }}
                     />
 
-                    {/* Warm parchment tint, clipped to the same arch */}
-                    <path
-                        d={DM_ARCH}
-                        fill="#d6b274"
-                        opacity="0.32"
-                        clipPath="url(#dmArchM)"
-                    />
+                    <div className="pointer-events-none absolute inset-0 bg-[#d6b274] mix-blend-multiply opacity-60" />
+                  </div>
+
+                  {/* Overlay SVG: black edge, corner blocks, and curved text above the video. */}
+                  <svg
+                      viewBox="0 0 365 639"
+                      className="pointer-events-none absolute inset-0 z-20 w-full h-full"
+                      style={{ overflow: "visible" }}
+                  >
+                    <defs>
+                      <path id="dmTextArcM" d="M -14 32 A 315 315 0 0 1 379 32" />
+                    </defs>
 
                     <path
                         d={DM_ARCH}
@@ -531,9 +576,6 @@ export default function Home() {
                         strokeLinejoin="miter"
                     />
 
-                    {/* bottom-corner squares = the miter outer block (strokeWidth/2 = 17u) at the
-      OUTER corner. The dash only lands one at the bottom-right; pin BOTH at the same
-      size/spot so they're symmetric (the BR one just overlaps its existing miter). */}
                     <rect x="-17" y="639" width="17" height="17" fill="#dfa867" />
                     <rect x="365" y="639" width="17" height="17" fill="#dfa867" />
 
