@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { supabase } from "../lib/supabaseClient";
-import {breadcrumb} from "@/components/SEO.jsx";
+import SEO from "../components/SEO.jsx";
+import { breadcrumb } from "../lib/seoSchema.js";
 
 const BLOG_IMAGE_BUCKET = "blog-images";
 
