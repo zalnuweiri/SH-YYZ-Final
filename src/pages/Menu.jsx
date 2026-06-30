@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { menuData } from "../data/MenuData";
-import SEO, { breadcrumb } from "../components/SEO.jsx";
+import SEO from "../components/SEO.jsx";
+import { breadcrumb } from "../lib/seoSchema.js";
 import Rule from "../components/Rule.jsx";
 import { Utensils, Martini, Camera } from "lucide-react";
 import {

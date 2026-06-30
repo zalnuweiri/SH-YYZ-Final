@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import SEO from "../components/SEO";
+import SEO from "../components/SEO.jsx";
 import Button from "../components/Button";
 import Reveal from "../lib/motion/Reveal";
 import Parallax from "../lib/motion/Parallax";

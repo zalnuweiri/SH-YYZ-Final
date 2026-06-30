@@ -2,7 +2,8 @@ import { Instagram, Facebook } from "lucide-react";
 import {Link} from "react-router-dom";
 import {useOTWidget} from "../components/OTwidget.jsx";
 import Footer from "../components/Footer";
-import SEO from "../components/SEO";
+import SEO from "../components/SEO.jsx";
+import { breadcrumb } from "../lib/seoSchema.js";
 
 
 

@@ -1,4 +1,5 @@
-import SEO, { breadcrumb } from "../components/SEO";
+import SEO from "../components/SEO.jsx";
+import { breadcrumb } from "../lib/seoSchema.js";
 import Button from "../components/Button";
 import Reveal from "../lib/motion/Reveal";
 import Parallax from "../lib/motion/Parallax";
