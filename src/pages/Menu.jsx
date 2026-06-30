@@ -7,6 +7,8 @@ import {
   D, M, PhotoToggle,
   RowDesktop, WineCellDesktop, RowMobile, WineRowMobile,
 } from "../components/menu/MenuParts.jsx";
+import { useOTWidget } from "../components/OTwidget.jsx";
+
 
 const WINE = new Set(["Vinos Rojos", "Vinos Blancos", "Vinos Rosé", "Espumosos"]);
 const isCafe = (c) => c.toLowerCase().startsWith("cafe");
@@ -23,7 +25,26 @@ const ED_PARA =
 const ED_SPEC =
   "Saffron-Infused Patrón El Alto | Mezcal | Galliano | Santomé | Maracuyá | Orange Bitters | Acids | Mango Boba | Electric Daisy | Gold";
 
+
+
+function MenuIntro() {
+  return (
+      <section className="mx-auto w-full max-w-[321px] md:max-w-[calc(var(--dw)*73.75/100)] pt-10 md:pt-[calc(var(--dw)*15.5/100)]  text-center">
+        <h1 className="font-display text-sh-cream text-[clamp(1.75rem,3vw,2.5rem)] tracking-[clamp(0.04em,0.3vw,0.055em)] leading-[1.05] font-bold">
+          Authentic Mexican Cuisine &amp; Elevated Cocktails in Toronto
+        </h1>
+
+        <p className="mx-auto mt-4 max-w-[520px] font-body text-sh-cream/70 text-[clamp(0.85rem,1.1vw,1rem)] tracking-[0.08em] leading-[1.4] font-bold">
+          A celebration of authentic Mexican culinary heritage, reimagined for the modern palate. At
+          Silent H, every dish is a story.
+        </p>
+      </section>
+  );
+}
+
 export default function Menu() {
+  const { setShowWidget } = useOTWidget();
+
   const [activeMenu, setActiveMenu] = useState("food"); // "food" | "drinks"
   const [showAll, setShowAll] = useState(false);
   const [pic, setPic] = useState({}); // key -> bool override
@@ -311,39 +332,49 @@ export default function Menu() {
         {/* ── Solid sticky top bar (obfuscates content on scroll; nav pill floats over it).
              Spans from top-0 with solid bg sh-ink (#0b0b0b, grayer than the pure-black body);
              internal padding clears the floating navbar and places the tabs at Figma y168. ── */}
+        <MenuIntro/>
+
         <div className="sticky top-0 z-30 bg-sh-ink">
+
           {/* desktop */}
-          <div className="hidden md:flex items-center justify-between mx-auto w-full max-w-[calc(var(--dw)*89.0625/100)] pt-[calc(var(--dw)*8.6/100)] pb-[calc(var(--dw)*0.7/100)]">
+          <div
+              className="hidden md:flex items-center justify-between mx-auto w-full max-w-[calc(var(--dw)*89.0625/100)] pt-[calc(var(--dw)*8.6/100)] pb-[calc(var(--dw)*0.7/100)]">
+
             <div className="flex items-end gap-[calc(var(--dw)*2.4/100)]">
-              <DTab id="food" icon={Utensils} label="Kitchen" />
-              <DTab id="drinks" icon={Martini} label="Bar" />
+              <DTab id="food" icon={Utensils} label="Kitchen"/>
+              <DTab id="drinks" icon={Martini} label="Bar"/>
             </div>
             <button
-              type="button"
-              onClick={() => setShowAll((v) => !v)}
-              className="group flex items-center gap-[calc(var(--dw)*0.9375/100)] text-sh-cream hover:text-sh-pink transition-colors"
+                type="button"
+                onClick={() => setShowAll((v) => !v)}
+                className="group flex items-center gap-[calc(var(--dw)*0.9375/100)] text-sh-cream hover:text-sh-pink transition-colors"
             >
-              <Camera className="w-[calc(var(--dw)*1.875/100)] h-[calc(var(--dw)*1.875/100)]" strokeWidth={1.75} />
-              <span className="font-body font-bold uppercase leading-none tracking-[0.20em] text-[round(calc(var(--dw)*1.25/100),1px)]">
+              <Camera className="w-[calc(var(--dw)*1.875/100)] h-[calc(var(--dw)*1.875/100)]" strokeWidth={1.75}/>
+              <span
+                  className="font-body font-bold uppercase leading-none tracking-[0.20em] text-[round(calc(var(--dw)*1.25/100),1px)]">
                 {showAll ? "Hide all pictures" : "Show all pictures"}
               </span>
-              <span className={`relative w-[calc(var(--dw)*2.8/100)] h-[calc(var(--dw)*1.4/100)] rounded-full transition-colors ${showAll ? "bg-sh-pink" : "bg-sh-grey-700"}`}>
-                <span className={`absolute top-[calc(var(--dw)*0.15/100)] h-[calc(var(--dw)*1.1/100)] w-[calc(var(--dw)*1.1/100)] rounded-full bg-sh-cream transition-all ${showAll ? "left-[calc(var(--dw)*1.55/100)]" : "left-[calc(var(--dw)*0.15/100)]"}`} />
+              <span
+                  className={`relative w-[calc(var(--dw)*2.8/100)] h-[calc(var(--dw)*1.4/100)] rounded-full transition-colors ${showAll ? "bg-sh-pink" : "bg-sh-grey-700"}`}>
+                <span
+                    className={`absolute top-[calc(var(--dw)*0.15/100)] h-[calc(var(--dw)*1.1/100)] w-[calc(var(--dw)*1.1/100)] rounded-full bg-sh-cream transition-all ${showAll ? "left-[calc(var(--dw)*1.55/100)]" : "left-[calc(var(--dw)*0.15/100)]"}`}/>
               </span>
             </button>
           </div>
           {/* mobile */}
           <div className="md:hidden flex items-end justify-start gap-[16px] px-[36px] pt-[72px] pb-[2px]">
-            <MTab id="food" icon={Utensils} label="Kitchen" />
-            <MTab id="drinks" icon={Martini} label="Bar" />
+            <MTab id="food" icon={Utensils} label="Kitchen"/>
+            <MTab id="drinks" icon={Martini} label="Bar"/>
           </div>
           {/* Gold under-bar line (Figma Line 32): desktop inset to the content margins, mobile full-width */}
-          <div className="hidden md:block h-px bg-sh-gold mx-auto w-[calc(var(--dw)*89.0625/100)]" />
-          <div className="md:hidden h-px bg-sh-gold" />
+          <div className="hidden md:block h-px bg-sh-gold mx-auto w-[calc(var(--dw)*89.0625/100)]"/>
+          <div className="md:hidden h-px bg-sh-gold"/>
         </div>
 
+
         {/* ── DESKTOP content ── (sits tight under the top bar, per preference) */}
-        <div className="hidden md:block mx-auto w-full max-w-[calc(var(--dw)*73.75/100)] pb-[calc(var(--dw)*9.375/100)]">
+        <div
+            className="hidden md:block mx-auto w-full max-w-[calc(var(--dw)*73.75/100)] pb-[calc(var(--dw)*9.375/100)]">
           {sections.map((s) => DesktopSection(s))}
         </div>
 
@@ -352,6 +383,13 @@ export default function Menu() {
           {sections.map((s) => MobileSection(s))}
         </div>
 
+
+        <button
+            onClick={() => setShowWidget(true)}
+            className="fixed bottom-6 right-6 z-[9999] bg-[#EB4660] hover:bg-black font-display text-white px-6 py-3 rounded-full shadow-xl tracking-[0.2em] uppercase text-sm transition-all"
+        >
+          Reserve
+        </button>
       </main>
     </>
   );

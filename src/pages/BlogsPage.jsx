@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { supabase } from "../lib/supabaseClient";
+import {breadcrumb} from "@/components/SEO.jsx";
 
 const BLOG_IMAGE_BUCKET = "blog-images";
 
@@ -165,6 +166,14 @@ export default function BlogsPage() {
     }, []);
 
     return (
+        <>
+        <SEO
+            title="Blog | Silent H Toronto"
+            description="Read stories about Mexican food, cocktails, events, and dining experiences at Silent H."
+            url="https://www.silenth.ca/blogs"
+            jsonLd={breadcrumb("Blog", "https://www.silenth.ca/blogs")}
+        />
+
         <div className="pt-20 bg-[#ece1d4] min-h-screen w-full">
 
 
@@ -203,5 +212,6 @@ export default function BlogsPage() {
             </main>
 
         </div>
+        </>
     );
 }

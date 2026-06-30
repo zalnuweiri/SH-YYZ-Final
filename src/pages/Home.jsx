@@ -61,38 +61,138 @@ const MENU_CARDS = [
 export default function Home() {
   const { setShowWidget } = useOTWidget();
 
-  const jsonLd = {
+  const restaurantSchema = {
     "@context": "https://schema.org",
-    "@type": "Restaurant",
-    name: "Silent H",
-    url: "https://www.silenth.ca",
-    telephone: "+14169003535",
-    servesCuisine: "Mexican",
-    priceRange: "$$$",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "461 King St W",
-      addressLocality: "Toronto",
-      addressRegion: "ON",
-      postalCode: "M5V 1K4",
-      addressCountry: "CA",
-    },
-    openingHoursSpecification: [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-        opens: "17:00",
-        closes: "00:00",
+        "@type": "Restaurant",
+        "@id": "https://www.silenth.ca/#restaurant",
+        name: "Silent H",
+        url: "https://www.silenth.ca/",
+        telephone: "+14169003535",
+        servesCuisine: "Mexican",
+        priceRange: "$$$",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "461 King St W",
+          addressLocality: "Toronto",
+          addressRegion: "ON",
+          postalCode: "M5V 1K4",
+          addressCountry: "CA",
+        },
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ],
+            opens: "17:00",
+            closes: "00:00",
+          },
+        ],
+        hasMap: "https://www.google.com/maps?q=Silent+H+Toronto",
+        menu: "https://www.silenth.ca/menu",
+        sameAs: [
+          "https://www.instagram.com/silenth.to/",
+          "https://www.tiktok.com/@silenth.to",
+          "https://www.facebook.com/silenth.to/",
+        ],
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: "4.5",
+          reviewCount: "1251",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://www.silenth.ca/#breadcrumb",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://www.silenth.ca/",
+          },
+        ],
+      },
+      {
+        "@type": "Event",
+        "@id": "https://www.silenth.ca/#monday-special",
+        name: "Monday Weekly Special at Silent H",
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        eventStatus: "https://schema.org/EventScheduled",
+        location: {
+          "@type": "Place",
+          name: "Silent H",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "461 King St W",
+            addressLocality: "Toronto",
+            addressRegion: "ON",
+            postalCode: "M5V 1K4",
+            addressCountry: "CA",
+          },
+        },
+        organizer: {
+          "@type": "Restaurant",
+          name: "Silent H",
+          url: "https://www.silenth.ca/",
+        },
+      },
+      {
+        "@type": "Event",
+        "@id": "https://www.silenth.ca/#wednesday-special",
+        name: "Wine Wednesday at Silent H",
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        eventStatus: "https://schema.org/EventScheduled",
+        location: {
+          "@type": "Place",
+          name: "Silent H",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "461 King St W",
+            addressLocality: "Toronto",
+            addressRegion: "ON",
+            postalCode: "M5V 1K4",
+            addressCountry: "CA",
+          },
+        },
+        organizer: {
+          "@type": "Restaurant",
+          name: "Silent H",
+          url: "https://www.silenth.ca/",
+        },
+      },
+      {
+        "@type": "Event",
+        "@id": "https://www.silenth.ca/#thursday-special",
+        name: "Thursday Weekly Special at Silent H",
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        eventStatus: "https://schema.org/EventScheduled",
+        location: {
+          "@type": "Place",
+          name: "Silent H",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "461 King St W",
+            addressLocality: "Toronto",
+            addressRegion: "ON",
+            postalCode: "M5V 1K4",
+            addressCountry: "CA",
+          },
+        },
+        organizer: {
+          "@type": "Restaurant",
+          name: "Silent H",
+          url: "https://www.silenth.ca/",
+        },
       },
     ],
-    sameAs: [
-      "https://www.instagram.com/silenth.to/",
-      "https://www.tiktok.com/@silenth.to",
-      "https://www.facebook.com/silenth.to/",
-    ],
-    menu: "https://www.silenth.ca/menu",
-    hasMap: "https://www.google.com/maps?q=Silent+H+Toronto",
-    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.5", reviewCount: "1251" },
   };
 
   return (
@@ -101,7 +201,7 @@ export default function Home() {
             title="Silent H Toronto | Modern Mexican Cuisine"
             description="Authentic yet modern Mexican dining in the heart of Toronto."
             url="https://www.silenth.ca/"
-            jsonLd={jsonLd}
+            jsonLd={restaurantSchema}
         />
         <main className="relative z-10 font-body text-sh-cream">
           {/* Shared SVG tone-curve filter for the Private Dining photo (gamma 2.8 — preserves
@@ -134,7 +234,7 @@ export default function Home() {
                   <div className="flex flex-col items-start gap-[2.5vw]">
                     {/* Mondwest Bold 64px ls4.48 lh64 → text 5vw, ls 0.35vw, leading-1 */}
                     <h1 className={`${T.hero} text-sh-cream leading-[1] font-bold`}>
-                      Mexican flavours, refined
+                      Mexican flavours, refined in Toronto
                     </h1>
                     {/* Desktop/Subtitle (NeueBit 22, ls 20%) */}
                     <p className={`w-full ${T.subtitle} text-sh-cream leading-[1.2] font-bold`}>
@@ -256,12 +356,12 @@ export default function Home() {
                   </h2>
                   {/* Paragraph — NeueBit REGULAR 22px (Desktop/Body), ls 10% */}
                   <p className={`${T.body} text-sh-cream leading-[1.25]`}>
-                    Plan your celebración auténtica in our vibrant space. Book your holiday event before
+                    Plan your celebración auténtica in our vibrant Toronto space. Book your holiday event before
                     October 31st and receive a $100 gift card. Terms apply.
                   </p>
                   {/* SecondaryButton 164×48 → 12.81vw × 3.75vw */}
                   <OutlineButton to="/events" size="w-[12.81vw] h-[3.75vw] font-bold">
-                    Start planning
+                    Plan Your Event
                   </OutlineButton>
                 </div>
               </Reveal>
@@ -319,7 +419,7 @@ export default function Home() {
                     Terms apply.
                   </p>
                   <Link to="/events" className="inline-flex items-center justify-center rounded-[4px] border border-sh-cream font-body uppercase text-sh-cream text-[16px] tracking-[0.1em] w-[164px] h-[48px] hover:bg-sh-cream hover:text-sh-black transition-colors">
-                    Start planning
+                    Plan Your Event
                   </Link>
                 </Reveal>
               </div>
@@ -414,17 +514,17 @@ export default function Home() {
                 {/* Line 1 — Monoglyphic Regular, EXACT figma STYLE values (verified in-browser):
                   28px (2.1875vw), letterSpacing 2% (0.044vw), lineHeight 1.2. At 2% ls
                   "I believe the best ingredient" = 438px, fits 463px → explicit break holds. */}
-                <p className={`${T.h2} text-sh-cream leading-[1.2]`}>
+                <h2 className={`${T.h2} text-sh-cream leading-[1.2]`}>
                   &ldquo;I believe the best ingredient<br />is nostalgia,
-                </p>
+                </h2>
                 {/* Line 2 — NeueBit REGULAR 22 / ls 20% / lh 1.0. (Style/bake say Bold but the
                   live file is Regular — the .fig is a STALE export from when it was Bold; proof:
                   baked line width 400.8px ≈ Bold 398.8, not Regular 387.) Explicit breaks at the
                   reference's points: "México" is a knife-edge wrap (466px vs 463 box) that natural
                   wrap flip-flops per viewport, so force it after "to" to match Figma at all widths. */}
-                <p className={`absolute top-[5.78vw] w-full ${T.subtitle} text-sh-cream leading-[1] font-bold`}>
+                <h3 className={`absolute top-[5.78vw] w-full ${T.subtitle} text-sh-cream leading-[1] font-bold`}>
                   which is reflected in every dish on this<br />menu. It is a tribute to my family, to<br />México and to my culture.&rdquo;
-                </p>
+                </h3>
                 {/* Chef — NeueBit Regular @ y2883, 22px (1.72vw), ls 10%. DIMMED to ~0.6 opacity:
                   figma renders the chef attribution at ~0.57× the quote's brightness (muted), so
                   full-cream made it stand out too much, but 0.36 was too muted — ~0.6 (chef reads

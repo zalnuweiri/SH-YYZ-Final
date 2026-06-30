@@ -121,6 +121,13 @@ export default function BlogContent() {
     );
 
     return (
+        <>
+        <SEO
+            title={`${article.title} | Silent H Toronto`}
+            description="Read the latest from Silent H Toronto."
+            url={`https://www.silenth.ca/blogs/${article.slug}`}
+            jsonLd={breadcrumb(article.title, `https://www.silenth.ca/blogs/${article.slug}`)}
+        />
         <div className="bg-[#ece1d4] min-h-screen w-full text-[#0b0b0b]">
 
 
@@ -232,5 +239,6 @@ export default function BlogContent() {
 
 
         </div>
+        </>
     );
 }

@@ -9,6 +9,13 @@ import SEO from "../components/SEO";
 export default function Fifa26() {
     const { setShowWidget } = useOTWidget();
     return (
+        <>
+            <SEO
+                title="Silent H Toronto Menu | Modern Mexican Cuisine (Menu)"
+                description="Explore the food and drink menu at Silent H in Toronto."
+                url="https://www.silenth.ca/menu"
+                jsonLd={breadcrumb("Menu", "https://www.silenth.ca/menu")}
+            />
         <div className="bg-[#ece1d4] w-full min-h-screen">
             {/* Header Navigation */}
             <header className="bg-[#eb4660] h-[96px] relative">
@@ -597,5 +604,6 @@ export default function Fifa26() {
             {/* Footer */}
             <Footer/>
         </div>
+        </>
     );
 }

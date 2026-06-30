@@ -4,28 +4,46 @@ export function breadcrumb(name, url) {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.silenth.ca" },
-            { "@type": "ListItem", position: 2, name, item: url },
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.silenth.ca/",
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name,
+                item: url,
+            },
         ],
     };
 }
 
-export default function SEO({ title, description, jsonLd, url }) {
+export default function SEO({
+                                title,
+                                description,
+                                jsonLd,
+                                url,
+                                index = true,
+                            }) {
     return (
         <>
-            {/* Title */}
             <title>{title}</title>
 
-            {/* Meta Description */}
-            <meta name="description" content={description} />
+            {description && (
+                <meta name="description" content={description} />
+            )}
 
-            {/* Canonical */}
-            {url && <link rel="canonical" href={url} />}
+            {url && (
+                <link rel="canonical" href={url} />
+            )}
 
-            {/* Robots */}
-            <meta name="robots" content="index, follow" />
+            <meta
+                name="robots"
+                content={index ? "index, follow" : "noindex, nofollow"}
+            />
 
-            {/* JSON-LD (supports single object OR array) */}
             {jsonLd && (
                 <script type="application/ld+json">
                     {JSON.stringify(jsonLd)}
