@@ -11,28 +11,28 @@ const BLOG_IMAGE_BUCKET = "blog-images";
 const FALLBACK_POSTS = [
     {
         id: "fallback-1",
-        img: "/redesign/fig-blog-1.jpg",
+        img: "/redesign/fig-blog-1.png",
         alt: "Date night at Silent H",
         title: "Date Night Restaurants in Toronto that Let You Worry About the Connection and Not the Experience",
         href: "/blogs",
     },
     {
         id: "fallback-2",
-        img: "/redesign/fig-blog-2.jpg",
+        img: "/redesign/fig-blog-2.png",
         alt: "Happy hour drinks and food",
         title: "Happy Hour in Downtown Toronto: Where to Go After Work",
         href: "/blogs",
     },
     {
         id: "fallback-3",
-        img: "/redesign/fig-blog-3.jpg",
+        img: "/redesign/fig-blog-3.png",
         alt: "Silent H restaurant interior",
         title: "Why Silent H Is the Best Mexican Restaurant in Toronto",
         href: "/blogs",
     },
     {
         id: "fallback-4",
-        img: "/redesign/fig-blog-4.jpg",
+        img: "/redesign/fig-blog-4.png",
         alt: "Private dining room at Silent H",
         title: "Private Dining in Toronto: Where to Host Your Next Event",
         href: "/blogs",

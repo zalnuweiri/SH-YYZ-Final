@@ -31,7 +31,7 @@ const MOBILE_TITLE_CLAMP_STYLE = {
 const FALLBACK_POSTS = [
     {
         id: "fallback-1",
-        img: "/redesign/fig-blog-1.jpg",
+        img: "/redesign/fig-blog-1.png",
         title: "The best for you to try at home",
         category: "Ingredients",
         href: "https://www.instagram.com/silenth.to/",
@@ -40,7 +40,7 @@ const FALLBACK_POSTS = [
     },
     {
         id: "fallback-2",
-        img: "/redesign/fig-blog-2.jpg",
+        img: "/redesign/fig-blog-2.png",
         title: "It’s drinks o’clock in Mexico",
         category: "Drinks",
         href: "https://www.instagram.com/silenth.to/",
@@ -49,7 +49,7 @@ const FALLBACK_POSTS = [
     },
     {
         id: "fallback-3",
-        img: "/redesign/fig-blog-3.jpg",
+        img: "/redesign/fig-blog-3.png",
         title: "Culture and food in one dish",
         category: "Culture",
         href: "https://www.instagram.com/silenth.to/",
@@ -58,7 +58,7 @@ const FALLBACK_POSTS = [
     },
     {
         id: "fallback-4",
-        img: "/redesign/fig-blog-4.jpg",
+        img: "/redesign/fig-blog-4.png",
         title: "The best for you to try at home",
         category: "Ingredients",
         href: "https://www.instagram.com/silenth.to/",
