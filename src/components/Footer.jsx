@@ -209,8 +209,8 @@ export default function Footer() {
                 </div>
 
                 {/* Frame 1653 — pink mailing button (60 below social) */}
-                <MailingButton sizing="mt-[60px] w-full h-[48px] text-[16px]" onOpen={() => setShowForm(true)}>
-                    Join our mailing communitie
+                <MailingButton sizing="mt-[60px] w-full h-[48px] text-[16px] font-bold" onOpen={() => setShowForm(true)}>
+                    Join our mailing community
                 </MailingButton>
 
                 {/* Quick links (40 below button) + 4 links at the .fig 20px pitch (20 below heading) */}
