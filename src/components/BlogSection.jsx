@@ -190,9 +190,7 @@ function DesktopBlogCard({ card, index }) {
                 </div>
 
                 <div className="mt-[0.45vw] flex flex-col items-start gap-[0.2vw]">
-                    <p className={`${T.subtitle} text-[#bfb7af] font-bold`}>
-                        {card.author}
-                    </p>
+
 
                     {card.dateLabel && (
                         <p className={`${T.caption2} text-[#bfb7af] font-bold`}>
